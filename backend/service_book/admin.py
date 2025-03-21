@@ -1,7 +1,14 @@
 from django.contrib import admin
 from .models import *
-from django.contrib.auth.admin import UserAdmin
-from .models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class UserAdmin(admin.ModelAdmin):
+    model = User
+    list_display = ('username', 'password', 'role')
+    search_fields = ('username', 'role')
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(ServiceCompany)

@@ -3,6 +3,10 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
     ROLE_CHOICES = [
         ('client', 'Клиент'),
         ('service', 'Сервисная организация'),
@@ -142,8 +146,7 @@ class Car(models.Model):
     consignee = models.CharField(max_length=255, verbose_name="Грузополучатель (конечный потребитель)")
     delivery_address = models.TextField(verbose_name="Адрес поставки (эксплуатации)")
     configuration = models.TextField(verbose_name="Комплектация (доп. опции)")
-    #  TODO: add user link
-    client = models.CharField(max_length=255, verbose_name="Клиент")
+    client = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Клиент")
     service_company = models.ForeignKey(ServiceCompany, on_delete=models.PROTECT, verbose_name="Сервисная компания")
 
     def __str__(self):
@@ -160,7 +163,6 @@ class TechnicalMaintenance(models.Model):
     operating_hours = models.PositiveBigIntegerField(verbose_name="Наработка, м/час")
     work_order_number = models.CharField(max_length=255, verbose_name="№ заказ-наряда")
     work_order_date = models.DateField(verbose_name="Дата заказ-наряда")
-    # maintenance_organization = models.CharField(max_length=255, verbose_name="Организация, проводившая ТО")
     car = models.ForeignKey(Car, on_delete=models.CASCADE, verbose_name="Машина")
     service_company = models.ForeignKey(ServiceCompany, on_delete=models.PROTECT, verbose_name="Сервисная компания")
 

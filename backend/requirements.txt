@@ -2,3 +2,4 @@ django
 dotenv
 djangorestframework
 django-allauth
+dj-rest-auth
