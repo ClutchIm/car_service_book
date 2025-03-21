@@ -27,7 +27,7 @@ class IsServiceAndManagerOrReadOnlyForClient(permissions.BasePermission):
 
 
 class IsManagerOrReadOnlyForAll(permissions.BasePermission):
-    """Edit acces for manager, safe methods for all"""
+    """Edit access for manager, safe methods for all"""
 
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS: return True

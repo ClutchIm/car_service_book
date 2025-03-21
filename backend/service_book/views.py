@@ -1,16 +1,19 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
 from rest_framework.decorators import action
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 
 from .models import *
 from .permissions import *
 from .serializers import *
+from .filters import *
+
 
 User = get_user_model()
 
@@ -89,73 +92,48 @@ class SteeringAxleModelViewSet(viewsets.ModelViewSet):
 
 
 class CarViewSet(viewsets.ModelViewSet):
-    serializer_class = CarSerializer
     permission_classes = [IsManagerOrReadOnlyForAll]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = CarFilter
+    ordering_fields = ['shipment_date']
+    ordering = ['shipment_date']
 
-    def get_queryset(self, *args, **kwargs):
+    def get_queryset(self):
         if self.request.user.is_authenticated:
-            self.queryset = Car.objects.all()
-        else:
-            self.queryset = Car.objects.all().values_list([
-                'factory_serial_number', 'equipment_model',
-                'engine_model', 'engine_serial_number',
-                'transmission_model', 'transmission_serial_number',
-                'drive_axle_model', 'drive_axle_serial_number',
-                'steering_axle_model', 'steering_axle_serial_number',
-            ])
+            return Car.objects.all()
+        return Car.objects.only(
+            'factory_serial_number', 'equipment_model',
+            'engine_model', 'engine_serial_number',
+            'transmission_model', 'transmission_serial_number',
+            'drive_axle_model', 'drive_axle_serial_number',
+            'steering_axle_model', 'steering_axle_serial_number'
+        )
 
-
+    def get_serializer_class(self):
+        if self.request.user.is_authenticated:
+            return CarSerializer  # Full data
+        return CarLimitedSerializer  # Limited data
 
 
 class TechnicalMaintenanceViewSet(viewsets.ModelViewSet):
-    queryset = TechnicalMaintenance.objects.all()
     serializer_class = TechnicalMaintenanceSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = TechnicalMaintenanceFilter
+    ordering_fields = ['maintenance_date']
+    ordering = ['maintenance_date']
+
+    def get_queryset(self):
+        return TechnicalMaintenance.objects.all()
 
 
 class ClaimViewSet(viewsets.ModelViewSet):
-    queryset = Claim.objects.all()
     serializer_class = ClaimSerializer
     permission_classes = [IsServiceAndManagerOrReadOnlyForClient]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = ClaimFilter
+    ordering_fields = ['failure_date']
+    ordering = ['failure_date']
 
-
-
-
-
-
-
-
-# class ServiceCompanyView(APIView):
-#     permission_classes = [IsManagerOrReadOnlyForClientAndService]
-#
-#     def get(self, request, pk=None):
-#         if pk:
-#             company = get_object_or_404(ServiceCompany, pk=pk)
-#             serializer = ServiceCompanySerializer(company)
-#             return Response(serializer.data)
-#         else:
-#             companies = ServiceCompany.objects.all()
-#             serializer = ServiceCompanySerializer(companies, many=True)
-#             return Response(serializer.data)
-#
-#     def post(self, request):
-#         serializer = ServiceCompanySerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#
-#     def put(self, request, pk):
-#         company = get_object_or_404(ServiceCompany, pk=pk)
-#         serializer = ServiceCompanySerializer(company, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#     def delete(self, request, pk):
-#         company = get_object_or_404(ServiceCompany, pk=pk)
-#         company.delete()
-#         return Response({"message": "Компания удалена"}, status=status.HTTP_204_NO_CONTENT)
-
-
-
+    def get_queryset(self):
+        return Claim.objects.all()

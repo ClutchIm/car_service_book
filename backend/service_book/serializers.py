@@ -76,6 +76,18 @@ class CarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CarLimitedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = [
+            'factory_serial_number', 'equipment_model',
+            'engine_model', 'engine_serial_number',
+            'transmission_model', 'transmission_serial_number',
+            'drive_axle_model', 'drive_axle_serial_number',
+            'steering_axle_model', 'steering_axle_serial_number'
+        ]
+
+
 class TechnicalMaintenanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = TechnicalMaintenance
