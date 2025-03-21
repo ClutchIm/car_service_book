@@ -12,10 +12,11 @@ class User(AbstractUser):
         ('service', 'Сервисная организация'),
         ('manager', 'Менеджер'),
     ]
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='client')
+    name = models.CharField(max_length=155, verbose_name='Имя/Название компании')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='client', verbose_name='Роль')
 
     def __str__(self):
-        return self.username
+        return self.name
 
 
 class ServiceCompany(models.Model):

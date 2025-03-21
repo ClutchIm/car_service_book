@@ -141,7 +141,7 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 ACCOUNT_LOGIN_METHODS = {"username"}
-ACCOUNT_SIGNUP_FIELDS = ["username*", "password1*", "password2*", "role*"]
+ACCOUNT_SIGNUP_FIELDS = ["username*", "password1*", "password2*", "role*", "name*"]
 ACCOUNT_SIGNUP_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 ACCOUNT_ADAPTER = "service_book.adapters.NoSignupAdapter"
