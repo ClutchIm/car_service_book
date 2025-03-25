@@ -1,0 +1,72 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #002147;
+  color: white;
+  padding: 15px;
+  min-height: 80px;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  &__logo img {
+    height: 50px;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__contact {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__name {
+    font-size: 16px;
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  &__auth-button {
+    background: white;
+    color: #002147;
+    padding: 5px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+    display: inline-block;
+  }
+
+  &__title {
+    margin-top: 10px;
+    font-size: 18px;
+    text-align: center;
+  }
+}

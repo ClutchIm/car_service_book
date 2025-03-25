@@ -8,7 +8,7 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'role', 'password']
+        fields = ['id', 'username', 'role', 'password', 'name', 'is_staff']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -73,12 +73,14 @@ class SteeringAxleModelSerializer(serializers.ModelSerializer):
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
+        depth = 1
         fields = '__all__'
 
 
 class CarLimitedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
+        depth = 1
         fields = [
             'factory_serial_number', 'equipment_model',
             'engine_model', 'engine_serial_number',
@@ -89,12 +91,34 @@ class CarLimitedSerializer(serializers.ModelSerializer):
 
 
 class TechnicalMaintenanceSerializer(serializers.ModelSerializer):
+    car = serializers.CharField()
+    maintenance_type = serializers.CharField()
+    service_company = serializers.CharField()
+
     class Meta:
         model = TechnicalMaintenance
         fields = '__all__'
+        depth = 1
+
+    def create(self, validated_data):
+        user = self.context['user']
+        try:
+            car = Car.objects.get(factory_serial_number=validated_data['car'])
+        except Car.DoesNotExist:
+            raise serializers.ValidationError({"car": ["Машина с таким номером не найдена"]})
+
+        if user.role == "client" and car.client != user:
+            raise serializers.ValidationError({"car": ["Вы не можете добавлять записи о чужом транспорте"]})
+
+        validated_data['maintenance_type'] = MaintenanceType.objects.get(id=validated_data['maintenance_type'])
+        validated_data['service_company'] = ServiceCompany.objects.get(id=validated_data['service_company'])
+        validated_data['car'] = car
+
+        return TechnicalMaintenance.objects.create(**validated_data)
 
 
 class ClaimSerializer(serializers.ModelSerializer):
     class Meta:
         model = Claim
         fields = '__all__'
+        depth = 1

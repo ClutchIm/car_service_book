@@ -30,5 +30,6 @@ class IsManagerOrReadOnlyForAll(permissions.BasePermission):
     """Edit access for manager, safe methods for all"""
 
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS: return True
-        return request.user.role == 'manager' or request.user.is_superuser
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user.is_authenticated and (request.user.role == 'manager' or request.user.is_superuser)

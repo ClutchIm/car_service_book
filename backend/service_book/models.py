@@ -142,6 +142,7 @@ class Car(models.Model):
     drive_axle_serial_number = models.CharField(max_length=255, verbose_name="Заводской номер ведущего моста")
     steering_axle_model = models.ForeignKey(SteeringAxleModel, on_delete=models.PROTECT, verbose_name="Модель управляемого моста")
     steering_axle_serial_number = models.CharField(max_length=255, verbose_name="Заводской номер управляемого моста")
+    # 10
     supply_contract = models.CharField(max_length=255, verbose_name="Договор поставки №, дата")
     shipment_date = models.DateField(verbose_name="Дата отгрузки с завода")
     consignee = models.CharField(max_length=255, verbose_name="Грузополучатель (конечный потребитель)")
@@ -198,7 +199,3 @@ class Claim(models.Model):
             self.downtime_days = 0
 
         super().save(*args, **kwargs)
-
-
-
-

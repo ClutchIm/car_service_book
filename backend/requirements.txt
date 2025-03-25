@@ -4,3 +4,4 @@ djangorestframework
 django-allauth
 dj-rest-auth
 django-filter
+django-cors-headers
