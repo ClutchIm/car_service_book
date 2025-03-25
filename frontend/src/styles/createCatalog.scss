@@ -1,0 +1,154 @@
+.create-catalog {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #EBE6D6;
+  border-radius: 8px;
+
+  .endpoints-btns {
+    width: 100%;
+    text-align: center;
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    button {
+      padding: 8px 15px;
+      background-color: #002147;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.3s;
+
+      &:hover {
+        background-color: #D20A11;
+      }
+    }
+  }
+
+  p {
+    text-align: center;
+    font-size: 16px;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .message {
+    text-align: center;
+    font-size: 14px;
+    color: green;
+    margin-bottom: 10px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      td {
+        padding: 10px;
+        text-align: left;
+      }
+
+      textarea,
+      input {
+        width: 97%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+  }
+
+  .edit {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #EBE6D6;
+    border-radius: 8px;
+
+    h3 {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #163E6C;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        gap: 10px;
+
+        span {
+          flex: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        button {
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 5px;
+          transition: transform 0.2s;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+
+          &:first-of-type {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.invalid {
+  border-color: red;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  display: block;
+  margin-top: 4px;
+}

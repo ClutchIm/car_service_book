@@ -14,12 +14,13 @@ class CarFilter(django_filters.FilterSet):
 
 class TechnicalMaintenanceFilter(django_filters.FilterSet):
     maintenance_type = django_filters.CharFilter(field_name="maintenance_type__name", lookup_expr="icontains")
-    factory_serial_number = django_filters.CharFilter(lookup_expr="icontains")
+    factory_serial_number = django_filters.CharFilter(field_name="car__factory_serial_number",lookup_expr="icontains")
     service_company = django_filters.CharFilter(field_name="service_company__name", lookup_expr="icontains")
 
     class Meta:
         model = TechnicalMaintenance
-        fields = ['maintenance_type', 'factory_serial_number', 'service_company']
+        fields = ['maintenance_type', 'car', 'service_company']
+
 
 class ClaimFilter(django_filters.FilterSet):
     failed_component = django_filters.CharFilter(field_name="failed_component__name", lookup_expr="icontains")

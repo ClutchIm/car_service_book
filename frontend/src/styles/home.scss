@@ -36,14 +36,10 @@ button {
   color: white;
   border: none;
   cursor: pointer;
-}
 
-.show-all-button {
-  padding: 8px 15px;
-  background-color: #004080;
-  color: white;
-  border: none;
-  cursor: pointer;
+  &:hover {
+    background-color: #D20A11;
+  }
 }
 
 .results-section {

@@ -16,7 +16,31 @@
   }
 
   &__logo img {
-    height: 50px;
+    height: 70px;
+  }
+
+  &__nav {
+    display: flex;
+    gap: 15px;
+    margin: auto auto auto 40px;
+
+    &-link {
+      display: inline-block;
+      background: #EBE6D6 !important;
+      color: #002147 !important;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      transform: rotate(-10deg);
+      transition: background 0.3s ease, color 0.3s ease;
+      cursor: pointer !important;
+
+      &:hover {
+        background: #D20A11 !important;
+        color: white !important;
+      }
+    }
   }
 
   &__info {
@@ -53,15 +77,21 @@
   }
 
   &__auth-button {
-    background: white;
-    color: #002147;
+    background: #EBE6D6 !important;
+    color: #002147 !important;
     padding: 5px 15px;
     text-decoration: none;
     border-radius: 5px;
-    cursor: pointer;
     border: none;
     font-size: 14px;
     display: inline-block;
+    transition: background 0.3s ease, color 0.3s ease;
+    cursor: pointer !important;
+
+    &:hover {
+      background: #D20A11 !important;
+      color: white !important;
+    }
   }
 
   &__title {

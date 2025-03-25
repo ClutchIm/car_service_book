@@ -152,3 +152,42 @@ export const createObject = async (data, endpoint) => {
         throw { error: "Ошибка отправки данных" };
     }
 };
+
+export const updateObject = async (data, endpoint) => {
+    try {
+        const response = await axios.put(`${API_URL}${endpoint}`, data, {
+            headers: getAuthHeaders()
+        });
+        return response.data;
+    } catch (error) {
+        handleApiError(error);
+    }
+};
+
+export const deleteObject = async (endpoint) => {
+    try {
+        await axios.delete(`${API_URL}${endpoint}`, {
+            headers: getAuthHeaders()
+        });
+    } catch (error) {
+        handleApiError(error);
+    }
+};
+
+export const fetchObjects = async (endpoint) => {
+    try {
+        const response = await axios.get(`${API_URL}${endpoint}`, {
+            headers: getAuthHeaders()
+        });
+        return response.data;
+    } catch (error) {
+        return [];
+    }
+};
+
+const handleApiError = (error) => {
+    if (error.response) {
+        throw error.response.data;
+    }
+    throw { error: "Ошибка выполнения запроса" };
+};

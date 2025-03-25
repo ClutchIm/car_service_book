@@ -26,7 +26,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def create_user(self, request):
         """Создание пользователя (только менеджер и админ)"""
-        if request.user.role not in ['manager']:
+        if request.user.role not in ['manager'] or not request.user.is_staff:
             return Response({"error": "Only managers can create users"}, status=status.HTTP_403_FORBIDDEN)
 
         serializer = self.get_serializer(data=request.data)
@@ -140,6 +140,13 @@ class CarViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(car)
         return Response(serializer.data)
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, context={'data': request.data})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Car object created successful"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class TechnicalMaintenanceViewSet(viewsets.ModelViewSet):
     serializer_class = TechnicalMaintenanceSerializer
@@ -171,7 +178,7 @@ class TechnicalMaintenanceViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        serializer = TechnicalMaintenanceSerializer(data=request.data, context={'user': request.user, 'data': request.data})
+        serializer = self.get_serializer(data=request.data, context={'user': request.user, 'data': request.data})
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "Technical Maintenance created successful"}, status=status.HTTP_201_CREATED)
@@ -210,7 +217,7 @@ class ClaimViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        serializer = ClaimSerializer(data=request.data, context={'data': request.data})
+        serializer = self.get_serializer(data=request.data, context={'data': request.data})
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "Claim created successful"}, status=status.HTTP_201_CREATED)

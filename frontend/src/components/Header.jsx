@@ -2,18 +2,31 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../services/authContext';
 import avatar from '../assets/avatar.jpg';
-import logo from '../assets/logo.png';
+import logoBlue from '../assets/logoBlue.png';
+import logoRed from '../assets/logoRed.png';
 import '../styles/header.scss';
 
 const Header = ({ onLogout }) => {
     const { user } = useAuth();
+    const [logo, setLogo] = React.useState(logoBlue);
 
     return (
         <header className="header">
             <div className="header__container">
-                <Link to="/" className="header__logo">
-                    <img src={logo} alt="Силант" />
+                <Link
+                    to="/"
+                    className="header__logo"
+                    onMouseEnter={() => setLogo(logoRed)}
+                    onMouseLeave={() => setLogo(logoBlue)}
+                >
+                    <img src={logo} alt="Силант"/>
                 </Link>
+
+                <nav className="header__nav">
+                    <Link to="/cc" className="header__nav-link">ГЛАВНАЯ</Link>
+                    <Link to="/ctm" className="header__nav-link">ЗАПИСЬ</Link>
+                </nav>
+
                 <div className="header__info">
                     <span className="header__contact">+7-8352-20-12-09, telegram</span>
                     {user ? (

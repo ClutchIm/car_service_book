@@ -81,7 +81,6 @@ const CarList = ({ carData }) => {
                     </tbody>
                 </table>
             </div>
-
             {selectedItem && <DetailsCard title={selectedItemType} data={selectedItem} />}
         </div>
     );

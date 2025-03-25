@@ -12,7 +12,7 @@ const FILTER_FIELDS = {
     ],
     maintenance: [
         { key: "maintenance_type", label: "Вид ТО", endpoint: "maintenance-type" },
-        { key: "factory_serial_number", label: "Зав. номер машины", type: "input"},
+        { key: "car", label: "Зав. номер машины", type: "input"},
         { key: "service_company", label: "Сервисная компания", endpoint: "service-company" }
     ],
     claims: [

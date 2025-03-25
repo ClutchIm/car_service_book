@@ -12,8 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        return user
+        return User.objects.create_user(**validated_data)
 
 
 class ServiceCompanySerializer(serializers.ModelSerializer):
@@ -75,6 +74,24 @@ class CarSerializer(serializers.ModelSerializer):
         model = Car
         depth = 1
         fields = '__all__'
+
+    def create(self, validated_data):
+        ctx_data = self.context['data']
+        username = ctx_data['client']
+        try:
+            validated_data['client'] = User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({"user": ["Пользователь с таким никнеймом не найден"]})
+
+        validated_data['equipment_model'] = EquipmentModel.objects.get(id=ctx_data['equipment_model'])
+        validated_data['engine_model'] = EngineModel.objects.get(id=ctx_data['engine_model'])
+        validated_data['transmission_model'] = TransmissionModel.objects.get(id=ctx_data['transmission_model'])
+        validated_data['drive_axle_model'] = DriveAxleModel.objects.get(id=ctx_data['drive_axle_model'])
+        validated_data['steering_axle_model'] = SteeringAxleModel.objects.get(id=ctx_data['steering_axle_model'])
+        validated_data['service_company'] = ServiceCompany.objects.get(id=ctx_data['service_company'])
+
+        return Car.objects.create(**validated_data)
+
 
 
 class CarLimitedSerializer(serializers.ModelSerializer):
