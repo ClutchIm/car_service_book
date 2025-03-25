@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { createObject, updateObject, deleteObject, fetchObjects } from "../services/api";
-import "../styles/createCatalog.scss";
+import "../styles/manageReference.scss";
 
-const CreateCatalog = () => {
+const ManageReference = () => {
     const [formData, setFormData] = useState({ name: "", description: "" });
     const [options, setOptions] = useState({ endpoint: "" });
     const [objects, setObjects] = useState([]);
@@ -131,4 +131,4 @@ const CreateCatalog = () => {
     );
 };
 
-export default CreateCatalog;
+export default ManageReference;

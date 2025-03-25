@@ -11,7 +11,8 @@ const CreateClaim = () => {
         failure_date: "",
         recovery_date: "",
         operating_hours: "",
-        description: ""
+        failure_description: "",
+        used_spare_parts: "",
     });
 
     const [options, setOptions] = useState({
@@ -20,6 +21,7 @@ const CreateClaim = () => {
         serviceCompanies: []
     });
 
+    const [message, setMessage] = useState("");
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
@@ -39,13 +41,19 @@ const CreateClaim = () => {
     }, []);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        setErrors((prev) => ({ ...prev, [name]: "" }));
+        setMessage("");
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrors({});
+        setMessage("");
         try {
             await createObject(formData, "claim/");
+            setMessage("Рекламация успешно создана");
             setFormData({
                 failed_component: "",
                 recovery_method: "",
@@ -54,17 +62,26 @@ const CreateClaim = () => {
                 failure_date: "",
                 recovery_date: "",
                 operating_hours: "",
-                description: ""
+                failure_description: "",
+                used_spare_parts: ""
             });
-            setErrors({});
-        } catch (error) {
-            setErrors(error);
+        } catch (errorData) {
+            if (errorData && typeof errorData === "object") {
+                const newErrors = {};
+                Object.keys(errorData).forEach((field) => {
+                    newErrors[field] = Array.isArray(errorData[field]) ? errorData[field][0] : errorData[field];
+                });
+                setErrors(newErrors);
+            } else if (typeof errorData === "string") {
+                setMessage(errorData);
+            }
         }
     };
 
     return (
         <div className="create-claim-container">
             <h2>Создать новую рекламацию</h2>
+            {message && <p className="message">{message}</p>}
             <form onSubmit={handleSubmit}>
                 <table>
                     <tbody>
@@ -77,6 +94,7 @@ const CreateClaim = () => {
                                     <option key={item.id} value={item.id}>{item.name}</option>
                                 ))}
                             </select>
+                            {errors.failed_component && <span className="error-text">{errors.failed_component}</span>}
                         </td>
                     </tr>
                     <tr>
@@ -88,6 +106,7 @@ const CreateClaim = () => {
                                     <option key={item.id} value={item.id}>{item.name}</option>
                                 ))}
                             </select>
+                            {errors.recoveryMethods && <span className="error-text">{errors.recoveryMethods}</span>}
                         </td>
                     </tr>
                     <tr>
@@ -99,6 +118,7 @@ const CreateClaim = () => {
                                     <option key={item.id} value={item.id}>{item.name}</option>
                                 ))}
                             </select>
+                            {errors.serviceCompanies && <span className="error-text">{errors.serviceCompanies}</span>}
                         </td>
                     </tr>
                     <tr>
@@ -111,7 +131,7 @@ const CreateClaim = () => {
                                 onChange={handleChange}
                                 className={errors.car ? "error" : ""}
                             />
-                            {errors.car && <span className="error-text">{errors.car[0]}</span>}
+                            {errors.car && <span className="error-text">{errors.car}</span>}
                         </td>
                     </tr>
                     <tr>
@@ -123,6 +143,7 @@ const CreateClaim = () => {
                                 value={formData.failure_date}
                                 onChange={handleChange}
                             />
+                            {errors.failure_date && <span className="error-text">{errors.failure_date}</span>}
                         </td>
                     </tr>
                     <tr>
@@ -134,6 +155,7 @@ const CreateClaim = () => {
                                 value={formData.recovery_date}
                                 onChange={handleChange}
                             />
+                            {errors.recovery_date && <span className="error-text">{errors.recovery_date}</span>}
                         </td>
                     </tr>
                     <tr>
@@ -145,16 +167,29 @@ const CreateClaim = () => {
                                 value={formData.operating_hours}
                                 onChange={handleChange}
                             />
+                            {errors.operating_hours && <span className="error-text">{errors.operating_hours}</span>}
                         </td>
                     </tr>
                     <tr>
                         <td>Описание отказа</td>
                         <td>
                                 <textarea
-                                    name="description"
-                                    value={formData.description}
+                                    name="failure_description"
+                                    value={formData.failure_description}
                                     onChange={handleChange}
                                 />
+                            {errors.failure_description && <span className="error-text">{errors.failure_description}</span>}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Используемые запчасти</td>
+                        <td>
+                                <textarea
+                                    name="used_spare_parts"
+                                    value={formData.used_spare_parts}
+                                    onChange={handleChange}
+                                />
+                            {errors.used_spare_parts && <span className="error-text">{errors.used_spare_parts}</span>}
                         </td>
                     </tr>
                     </tbody>

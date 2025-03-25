@@ -84,13 +84,6 @@ export const createUser = async (userData) => {
     return response.data;
 };
 
-export const getDetailsByType = async (type, id) => {
-    const response = await axios.get(`${API_URL}${type}/${id}/`, {
-        headers: getAuthHeaders()
-    });
-    return response.data;
-};
-
 export const getAllCars = async () => {
     try {
         const response = await axios.get(`${API_URL}car/`, {

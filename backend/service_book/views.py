@@ -217,8 +217,10 @@ class ClaimViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
+        print(request.data)
         serializer = self.get_serializer(data=request.data, context={'data': request.data})
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "Claim created successful"}, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

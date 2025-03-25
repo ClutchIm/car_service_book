@@ -78,7 +78,7 @@ const CreateCar = () => {
 
         try {
             await createObject(formData, "car/");
-            setMessage("ТО успешно создано");
+            setMessage("Транспорт успешно создан");
             setFormData({
                 factory_serial_number: "",
                 equipment_model: "",

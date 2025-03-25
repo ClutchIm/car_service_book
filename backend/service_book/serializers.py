@@ -138,6 +138,7 @@ class ClaimSerializer(serializers.ModelSerializer):
         depth = 1
 
     def create(self, validated_data):
+        print('asd')
         ctx_data = self.context['data']
         try:
             validated_data['car'] = Car.objects.get(factory_serial_number=ctx_data['car'])

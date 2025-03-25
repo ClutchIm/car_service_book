@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Manage from "./pages/ManageData";
 import { useAuth } from "./services/authContext";
 
 const App = () => {
@@ -45,6 +46,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Home onSearch={handleSearch} />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/manage" element={<Manage />} />
             </Routes>
             <Footer />
         </Router>

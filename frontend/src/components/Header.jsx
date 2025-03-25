@@ -23,8 +23,8 @@ const Header = ({ onLogout }) => {
                 </Link>
 
                 <nav className="header__nav">
-                    <Link to="/cc" className="header__nav-link">ГЛАВНАЯ</Link>
-                    <Link to="/ctm" className="header__nav-link">ЗАПИСЬ</Link>
+                    <Link to="/" className="header__nav-link">ГЛАВНАЯ</Link>
+                    <Link to="/manage" className="header__nav-link">ЗАПИСЬ</Link>
                 </nav>
 
                 <div className="header__info">
