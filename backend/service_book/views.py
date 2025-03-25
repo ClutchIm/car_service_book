@@ -171,7 +171,7 @@ class TechnicalMaintenanceViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        serializer = TechnicalMaintenanceSerializer(data=request.data, context={'user': request.user})
+        serializer = TechnicalMaintenanceSerializer(data=request.data, context={'user': request.user, 'data': request.data})
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "Technical Maintenance created successful"}, status=status.HTTP_201_CREATED)
@@ -208,3 +208,10 @@ class ClaimViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(claims, many=True)
         return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = ClaimSerializer(data=request.data, context={'data': request.data})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Claim created successful"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

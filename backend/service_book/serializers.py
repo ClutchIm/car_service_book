@@ -91,10 +91,6 @@ class CarLimitedSerializer(serializers.ModelSerializer):
 
 
 class TechnicalMaintenanceSerializer(serializers.ModelSerializer):
-    car = serializers.CharField()
-    maintenance_type = serializers.CharField()
-    service_company = serializers.CharField()
-
     class Meta:
         model = TechnicalMaintenance
         fields = '__all__'
@@ -102,16 +98,17 @@ class TechnicalMaintenanceSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['user']
+        ctx_data = self.context['data']
         try:
-            car = Car.objects.get(factory_serial_number=validated_data['car'])
+            car = Car.objects.get(factory_serial_number=ctx_data['car'])
         except Car.DoesNotExist:
             raise serializers.ValidationError({"car": ["Машина с таким номером не найдена"]})
 
         if user.role == "client" and car.client != user:
             raise serializers.ValidationError({"car": ["Вы не можете добавлять записи о чужом транспорте"]})
 
-        validated_data['maintenance_type'] = MaintenanceType.objects.get(id=validated_data['maintenance_type'])
-        validated_data['service_company'] = ServiceCompany.objects.get(id=validated_data['service_company'])
+        validated_data['maintenance_type'] = MaintenanceType.objects.get(id=ctx_data['maintenance_type'])
+        validated_data['service_company'] = ServiceCompany.objects.get(id=ctx_data['service_company'])
         validated_data['car'] = car
 
         return TechnicalMaintenance.objects.create(**validated_data)
@@ -122,3 +119,17 @@ class ClaimSerializer(serializers.ModelSerializer):
         model = Claim
         fields = '__all__'
         depth = 1
+
+    def create(self, validated_data):
+        ctx_data = self.context['data']
+        try:
+            validated_data['car'] = Car.objects.get(factory_serial_number=ctx_data['car'])
+        except Car.DoesNotExist:
+            raise serializers.ValidationError({"car": ["Машина с таким номером не найдена"]})
+
+        validated_data['failed_component'] = FailedComponent.objects.get(id=ctx_data['failed_component'])
+        validated_data['recovery_method'] = RecoveryMethod.objects.get(id=ctx_data['recovery_method'])
+        validated_data['service_company'] = ServiceCompany.objects.get(id=ctx_data['service_company'])
+
+        return Claim.objects.create(**validated_data)
+

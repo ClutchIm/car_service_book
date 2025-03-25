@@ -139,9 +139,9 @@ export const getOptions = async (endpoint) => {
     }
 };
 
-export const createTechnicalMaintenance = async (data) => {
+export const createObject = async (data, endpoint) => {
     try {
-        const response = await axios.post(`${API_URL}technical-maintenance/`, data, {
+        const response = await axios.post(`${API_URL}${endpoint}`, data, {
             headers: getAuthHeaders()
         });
         return response.data;
@@ -152,4 +152,3 @@ export const createTechnicalMaintenance = async (data) => {
         throw { error: "Ошибка отправки данных" };
     }
 };
-

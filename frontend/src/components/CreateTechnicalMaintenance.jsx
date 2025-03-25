@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getOptions, createTechnicalMaintenance } from "../services/api";
+import { getOptions, createObject } from "../services/api";
 import "../styles/createTechnicalMaintenance.scss";
 
 const CreateTechnicalMaintenance = () => {
@@ -52,7 +52,7 @@ const CreateTechnicalMaintenance = () => {
         setMessage("");
 
         try {
-            await createTechnicalMaintenance(formData);
+            await createObject(formData, 'technical-maintenance/');
             setMessage("ТО успешно создано");
             setFormData({
                 maintenance_type: "",
